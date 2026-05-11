@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💰 Finance Tracker v5.1 - Template Fix</title>
+<title>💰 Finance Tracker v5.2 - Template Completamente Editabile</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -140,20 +140,26 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .template-title span{font-size:12px;color:var(--text3);font-weight:500;}
 .load-month-btn{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;padding:11px 20px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;transition:all .2s;}
 .load-month-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,110,255,.4);}
-.template-list{display:flex;flex-direction:column;gap:9px;margin-bottom:16px;}
-.template-item{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;align-items:center;gap:14px;transition:all .2s;}
-.template-item:hover{background:var(--card2);border-color:var(--border2);}
-.tpl-dot{width:10px;height:10px;border-radius:50%;background:var(--primary);flex-shrink:0;}
-.tpl-info{flex:1;}
-.tpl-desc{font-size:14px;font-weight:700;}
-.tpl-meta{font-size:12px;color:var(--text3);margin-top:2px;}
-.tpl-amt{font-size:16px;font-weight:800;color:var(--fixed);white-space:nowrap;}
-.tpl-actions{display:flex;gap:6px;}
-.tpl-btn{background:transparent;border:none;cursor:pointer;font-size:14px;padding:5px 7px;border-radius:7px;transition:all .2s;}
-.tpl-btn.edit:hover{color:var(--primary2);background:rgba(124,110,255,.12);}
-.tpl-btn.del:hover{color:var(--danger);background:rgba(255,87,87,.1);}
-.template-empty{text-align:center;padding:18px;color:var(--text3);font-size:13px;background:var(--bg3);border:1px dashed var(--border);border-radius:12px;}
-.add-tpl-form{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:16px;}
+
+/* TEMPLATE TABLE */
+.template-table{width:100%;border-collapse:collapse;margin-bottom:16px;}
+.template-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);padding:0 14px 12px;text-align:left;border-bottom:1px solid var(--border);}
+.template-table th:last-child,.template-table th:nth-last-child(2){text-align:right;}
+.template-table td{padding:12px 14px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.template-table tr:last-child td{border-bottom:none;}
+.template-table tr:hover td{background:rgba(255,255,255,.02);}
+.template-empty{text-align:center;padding:24px;color:var(--text3);font-size:14px;background:var(--bg3);border:1px dashed var(--border);border-radius:12px;}
+
+/* TEMPLATE EDIT ROW */
+.tpl-edit-input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;width:100%;transition:border-color .2s;}
+.tpl-edit-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px rgba(124,110,255,.1);}
+.tpl-edit-select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;}
+.tpl-save-btn{background:var(--success);color:#fff;border:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.tpl-save-btn:hover{opacity:.85;}
+.tpl-cancel-btn{background:transparent;border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.tpl-cancel-btn:hover{border-color:var(--danger);color:var(--danger);}
+
+.add-tpl-form{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:16px;margin-top:16px;}
 .add-tpl-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;}
 .btn-add-tpl{padding:10px 18px;border-radius:10px;border:none;font-size:13px;font-weight:700;background:var(--primary);color:#fff;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;align-self:flex-end;transition:all .2s;}
 .btn-add-tpl:hover{opacity:.85;}
@@ -245,6 +251,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 /* SECTION DIVIDER */
 .section-label{font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px;padding-bottom:4px;}
+
+/* EDIT MODE HIGHLIGHT */
+.editing-row{background:rgba(124,110,255,.08)!important;}
+.editing-row td{border-bottom-color:var(--primary)!important;}
 </style>
 </head>
 <body>
@@ -252,7 +262,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="topbar">
   <div>
     <div class="logo-title">💰 Finance Tracker</div>
-    <div class="logo-sub">Monthly Income & Expense Manager — v5.1 Template Fix</div>
+    <div class="logo-sub">Monthly Income & Expense Manager — v5.2 Template Editabile</div>
   </div>
   <div class="topbar-pills">
     <button class="pill rate" onclick="openModal('rateModal')">💱 1 USD = <span id="rateDisp">0.9200</span> EUR ✏️</button>
@@ -272,7 +282,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="main">
 
   <div class="save-notice">
-    💡 <span><b>Auto-save active.</b> Template items are fully editable — modify before loading each month!</span>
+    💡 <span><b>Template completamente editabile!</b> Modifica, aggiungi o elimina voci direttamente nella tabella template prima di caricarle nel mese.</span>
   </div>
 
   <!-- GOAL -->
@@ -351,21 +361,25 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         </div>
       </div>
 
-      <!-- TEMPLATE EDITABILE -->
+      <!-- TEMPLATE COMPLETAMENTE EDITABILE CON TABELLA -->
       <div class="template-section">
         <div class="template-header">
-          <div class="template-title">📋 Fixed Expenses Template <span>— edit, delete, then load each month</span></div>
+          <div class="template-title">📋 Fixed Expenses Template <span>— vedi, modifica, elimina o aggiungi voci</span></div>
           <button class="load-month-btn" onclick="prepareTemplateLoad()">🔄 Load This Month</button>
         </div>
-        <div class="template-list" id="templateList"></div>
+        
+        <!-- TABELLA TEMPLATE EDITABILE -->
+        <div id="templateTableContainer"></div>
+        
+        <!-- FORM AGGIUNTA NUOVA VOCE -->
         <div class="add-tpl-form">
-          <div class="add-tpl-title">➕ Add Permanent Fixed Expense to Template</div>
+          <div class="add-tpl-title">➕ Add New Fixed Expense to Template</div>
           <div class="add-form-row">
             <div class="fg"><label>Description</label><input type="text" id="tpl_desc" placeholder="e.g. Rent"></div>
             <div class="fg" style="max-width:170px;"><label>Category</label><select id="tpl_cat"></select></div>
             <div class="fg" style="max-width:120px;"><label>Amount</label><input type="number" id="tpl_amount" placeholder="0.00" step="0.01" min="0"></div>
             <div class="fg" style="max-width:90px;"><label>Currency</label><select id="tpl_cur"><option value="eur">€ EUR</option><option value="usd">$ USD</option></select></div>
-            <button class="btn-add-tpl" onclick="addToTemplate()">+ Save to Template</button>
+            <button class="btn-add-tpl" onclick="addToTemplate()">+ Add to Template</button>
           </div>
         </div>
       </div>
@@ -471,13 +485,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 </div>
 
-<!-- EDIT MODAL -->
+<!-- MODALS (invariati) -->
 <div class="overlay" id="editModal">
   <div class="modal">
     <h3>✏️ Edit Entry</h3>
     <p>Modify the details of this transaction.</p>
-    <input type="hidden" id="edit_id">
-    <input type="hidden" id="edit_type">
+    <input type="hidden" id="edit_id"><input type="hidden" id="edit_type">
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div class="fg"><label>Description</label><input type="text" id="edit_desc"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -493,29 +506,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
-<!-- TEMPLATE EDIT MODAL -->
-<div class="overlay" id="templateEditModal">
-  <div class="modal">
-    <h3>✏️ Edit Template Item</h3>
-    <p>Modify this recurring fixed expense in your template.</p>
-    <input type="hidden" id="tpl_edit_id">
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div class="fg"><label>Description</label><input type="text" id="tpl_edit_desc"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="fg"><label>Category</label><select id="tpl_edit_cat"></select></div>
-        <div class="fg"><label>Amount</label><input type="number" id="tpl_edit_amount" step="0.01" min="0"></div>
-      </div>
-      <div class="fg" style="max-width:200px;"><label>Currency</label><select id="tpl_edit_cur"><option value="eur">€ EUR</option><option value="usd">$ USD</option></select></div>
-    </div>
-    <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('templateEditModal')">Cancel</button><button class="btn-save" onclick="saveTemplateEdit()">Update Template</button></div>
-  </div>
-</div>
-
-<!-- TEMPLATE LOAD MODAL -->
 <div class="overlay" id="templateLoadModal">
   <div class="modal">
     <h3>🔄 Load Template for <span id="tplLoadMonth"></span></h3>
-    <p>Select which fixed expenses to load this month. Choose the date for all items.</p>
+    <p>Select which fixed expenses to load this month.</p>
     <div class="fg" style="margin-bottom:12px;"><label>Date for all loaded items</label><input type="date" id="tpl_load_date"></div>
     <div class="template-checkbox-list" id="templateCheckboxList"></div>
     <div class="template-total-preview" id="templateTotalPreview">Total: €0.00</div>
@@ -526,35 +520,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 </div>
 
-<!-- RATE MODAL -->
 <div class="overlay" id="rateModal">
-  <div class="modal">
-    <h3>💱 Exchange Rate</h3>
-    <p>Set current USD → EUR conversion rate.</p>
-    <div class="fg"><label>1 USD = ? EUR</label><input type="number" id="rateInp" step="0.0001" min="0.01" placeholder="0.9200"></div>
-    <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('rateModal')">Cancel</button><button class="btn-save" onclick="saveRate()">Save</button></div>
-  </div>
+  <div class="modal"><h3>💱 Exchange Rate</h3><p>Set current USD → EUR conversion rate.</p><div class="fg"><label>1 USD = ? EUR</label><input type="number" id="rateInp" step="0.0001" min="0.01" placeholder="0.9200"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeModal('rateModal')">Cancel</button><button class="btn-save" onclick="saveRate()">Save</button></div></div>
 </div>
-
-<!-- GOAL MODAL -->
 <div class="overlay" id="goalModal">
-  <div class="modal">
-    <h3>🎯 Monthly Income Goal</h3>
-    <p>Set your monthly income target in EUR.</p>
-    <div class="fg"><label>Goal (€)</label><input type="number" id="goalInp" step="100" min="0" placeholder="10000"></div>
-    <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('goalModal')">Cancel</button><button class="btn-save" onclick="saveGoal()">Save</button></div>
-  </div>
+  <div class="modal"><h3>🎯 Monthly Income Goal</h3><p>Set your monthly income target in EUR.</p><div class="fg"><label>Goal (€)</label><input type="number" id="goalInp" step="100" min="0" placeholder="10000"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeModal('goalModal')">Cancel</button><button class="btn-save" onclick="saveGoal()">Save</button></div></div>
 </div>
-
-<!-- IMPORT MODAL -->
 <div class="overlay" id="importModal">
-  <div class="modal">
-    <h3>📂 Import Backup</h3>
-    <p>Select a JSON backup file. Data will be merged with existing entries.</p>
-    <div class="import-area" onclick="document.getElementById('fileInp').click()">📁 Click to select your backup .json file</div>
-    <input type="file" id="fileInp" accept=".json" style="display:none;" onchange="handleImport(event)">
-    <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('importModal')">Cancel</button></div>
-  </div>
+  <div class="modal"><h3>📂 Import Backup</h3><p>Select a JSON backup file.</p><div class="import-area" onclick="document.getElementById('fileInp').click()">📁 Click to select your backup .json file</div><input type="file" id="fileInp" accept=".json" style="display:none;" onchange="handleImport(event)"><div class="modal-btns"><button class="btn-cancel" onclick="closeModal('importModal')">Cancel</button></div></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -564,14 +537,16 @@ const MONTHS=['January','February','March','April','May','June','July','August',
 const INC_CATS=['Digital Product Sales','Affiliate Commissions','Consulting','Freelance Work','Royalties','Bonus','Other Income'];
 const FIX_CATS_DEF=['Rent','Phone','Subscriptions','Gym','Insurance','Internet','Transport','Utilities','Other Fixed'];
 const VAR_CATS_DEF=['Food & Grocery','Dining Out','Shopping','Entertainment','Health','Travel','Advertising','Software & Tools','Education','Clothing','Other Variable'];
-const ALL_EXP_CATS=()=>[...FIX_CATS_DEF,...VAR_CATS_DEF,...S.fixCats,...S.varCats];
 const PAL_INC=['#3DD68C','#7C6EFF','#FFB84D','#FF6584','#00C9FF','#9B59B6','#2ECC71'];
 const PAL_FIX=['#7C6EFF','#9D92FF','#5A4ECC','#3D35AA','#B39DFF','#6A5EEE'];
 const PAL_VAR=['#FF8C57','#FF5757','#FFB347','#FF6584','#E74C3C','#FF4D4D','#FF7043','#FF8A65','#FFA726'];
-const LS_KEY='ft5_alldata_v51_fix';
+const LS_KEY='ft5_v52_template';
 
 let S={year:2026,month:new Date().getMonth(),rate:0.9200,goal:10000,
   fixCats:[],varCats:[],fixedTemplate:[],budgets:[],notes:{},data:{}};
+
+// Variabile per tenere traccia di quale riga template è in modifica
+let editingTemplateId=null;
 
 function sKey(y,m){return `${y}_${m}`;}
 function getD(){return S.data[sKey(S.year,S.month)]||[];}
@@ -595,8 +570,8 @@ window.onload=function(){
   document.getElementById('rateDisp').textContent=S.rate.toFixed(4);
   document.getElementById('yearSel').value=S.year;
   buildMonthTabs();fillSelects();renderAll();
-  if(loaded)showToast('✅ Data loaded — template items are fully editable!','ok');
-  else showToast('👋 Welcome! Add your recurring expenses to the template','ok');
+  if(loaded)showToast('✅ Data loaded — template completamente editabile!','ok');
+  else showToast('👋 Welcome! Template pronto per le tue spese ricorrenti','ok');
 };
 
 function setTodayDates(){
@@ -612,15 +587,15 @@ function buildMonthTabs(){
     c.appendChild(b);
   });
 }
-function selectMonth(m){S.month=m;buildMonthTabs();renderAll();}
-function changeYear(){S.year=parseInt(document.getElementById('yearSel').value);renderAll();}
+function selectMonth(m){S.month=m;buildMonthTabs();editingTemplateId=null;renderAll();}
+function changeYear(){S.year=parseInt(document.getElementById('yearSel').value);editingTemplateId=null;renderAll();}
 
 function fillSelects(){
   populateSel('i_cat',INC_CATS);
   const fCats=[...FIX_CATS_DEF,...S.fixCats];
   const vCats=[...VAR_CATS_DEF,...S.varCats];
   populateSel('f_cat',fCats);populateSel('v_cat',vCats);
-  populateSel('tpl_cat',fCats);populateSel('tpl_edit_cat',fCats);
+  populateSel('tpl_cat',fCats);
   populateSel('bud_cat',[...fCats,...vCats]);
   populateSel('edit_cat',[...INC_CATS,...fCats,...vCats]);
 }
@@ -637,15 +612,13 @@ function renderAll(){
   document.getElementById('chartsLabel').textContent=lbl;
   document.getElementById('noteMonthLabel').textContent=lbl;
   document.getElementById('bwYear').textContent=S.year;
-  document.getElementById('tplLoadMonth').textContent=lbl;
   setTodayDates();
   renderNote();
   renderBlock('income');renderBlock('fixed');renderBlock('variable');
-  renderSummary();renderGoal();renderCustomTags();renderTemplate();
+  renderSummary();renderGoal();renderCustomTags();renderTemplateTable();
   renderBudgets();renderBestWorst();renderCharts();
 }
 
-// ── NOTE ──
 function renderNote(){
   const key=`${S.year}_${S.month}`;
   document.getElementById('noteArea').value=S.notes[key]||'';
@@ -656,8 +629,8 @@ function saveNote(){
   saveLS();showToast('📝 Note saved!','ok');
 }
 
-// ── ENTRIES ──
 function toEUR(a,cur){return cur==='usd'?a*S.rate:a;}
+
 function addEntry(type){
   const p=type[0];
   const desc=document.getElementById(`${p}_desc`).value.trim();
@@ -665,15 +638,12 @@ function addEntry(type){
   const cat=document.getElementById(`${p}_cat`).value;
   const date=document.getElementById(`${p}_date`).value;
   const cur=document.getElementById(`${p}_cur`).value;
-  if(!desc){showToast('Enter a description','err');return;}
-  if(!amt||amt<=0){showToast('Enter a valid amount','err');return;}
-  if(!date){showToast('Select a date','err');return;}
+  if(!desc||!amt||amt<=0||!date){showToast('Fill all fields','err');return;}
   const amtEUR=parseFloat(toEUR(amt,cur).toFixed(2));
-  const arr=getD();arr.push({id:Date.now(),type,desc,amtEUR,amtOrig:amt,cur,cat,date});
-  setD(arr);saveLS();
+  getD().push({id:Date.now(),type,desc,amtEUR,amtOrig:amt,cur,cat,date});
   document.getElementById(`${p}_desc`).value='';
   document.getElementById(`${p}_amount`).value='';
-  renderAll();
+  saveLS();renderAll();
   showToast(`${type==='income'?'+':'−'}€${amtEUR.toFixed(2)} saved ✅`,'ok');
 }
 function delEntry(id){setD(getD().filter(e=>e.id!==id));saveLS();renderAll();showToast('Entry deleted','ok');}
@@ -681,7 +651,6 @@ function delEntry(id){setD(getD().filter(e=>e.id!==id));saveLS();renderAll();sho
 function openEdit(id){
   const e=getD().find(x=>x.id===id);if(!e)return;
   document.getElementById('edit_id').value=e.id;
-  document.getElementById('edit_type').value=e.type;
   document.getElementById('edit_desc').value=e.desc;
   document.getElementById('edit_date').value=e.date;
   document.getElementById('edit_amount').value=e.amtOrig;
@@ -699,9 +668,8 @@ function saveEdit(){
   const cur=document.getElementById('edit_cur').value;
   if(!desc||!amt||amt<=0||!date){showToast('Fill all fields','err');return;}
   const amtEUR=parseFloat(toEUR(amt,cur).toFixed(2));
-  const arr=getD().map(e=>e.id===id?{...e,desc,amtEUR,amtOrig:amt,cur,cat,date}:e);
-  setD(arr);saveLS();closeModal('editModal');renderAll();
-  showToast('Entry updated ✅','ok');
+  setD(getD().map(e=>e.id===id?{...e,desc,amtEUR,amtOrig:amt,cur,cat,date}:e));
+  saveLS();closeModal('editModal');renderAll();showToast('Entry updated ✅','ok');
 }
 
 function renderBlock(type){
@@ -711,7 +679,7 @@ function renderBlock(type){
   const [listId,totId]=ids[type];
   document.getElementById(totId).textContent=`€${total.toFixed(2)}`;
   const tbody=document.getElementById(listId);
-  if(!arr.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="5">No entries yet — add one above</td></tr>`;return;}
+  if(!arr.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="5">No entries yet</td></tr>`;return;}
   tbody.innerHTML=arr.map(e=>{
     const orig=e.cur==='usd'?` <span style="font-size:11px;color:var(--text3);">($${e.amtOrig.toFixed(2)})</span>`:'';
     return `<tr>
@@ -720,8 +688,8 @@ function renderBlock(type){
       <td class="td-date">${e.cat}</td>
       <td class="td-amt ${type}">€${e.amtEUR.toFixed(2)}${orig}</td>
       <td class="td-actions">
-        <button class="icon-btn edit" onclick="openEdit(${e.id})" title="Edit">✏️</button>
-        <button class="icon-btn del" onclick="delEntry(${e.id})" title="Delete">🗑</button>
+        <button class="icon-btn edit" onclick="openEdit(${e.id})">✏️</button>
+        <button class="icon-btn del" onclick="delEntry(${e.id})">🗑</button>
       </td>
     </tr>`;
   }).join('');
@@ -738,31 +706,25 @@ function addBudget(){
   else S.budgets.push({cat,limit:amt});
   document.getElementById('bud_amt').value='';
   saveLS();renderBudgets();
-  showToast(`Budget set: ${cat} → €${amt} ✅`,'ok');
 }
 function delBudget(cat){S.budgets=S.budgets.filter(b=>b.cat!==cat);saveLS();renderBudgets();}
 function renderBudgets(){
   const arr=getD();
   const c=document.getElementById('budgetGrid');
-  if(!S.budgets.length){c.innerHTML='<div style="font-size:13px;color:var(--text3);padding:8px 0;">No budgets set yet — add a category limit below</div>';return;}
+  if(!S.budgets.length){c.innerHTML='<div style="font-size:13px;color:var(--text3);padding:8px 0;">No budgets set yet</div>';return;}
   c.innerHTML=S.budgets.map(b=>{
     const spent=arr.filter(e=>e.cat===b.cat).reduce((s,e)=>s+e.amtEUR,0);
     const pct=Math.min(100,(spent/b.limit)*100);
     const cls=pct>=100?'over':pct>=75?'warn':'ok';
     return `<div class="budget-item">
-      <div class="budget-item-top">
-        <div class="budget-cat">${b.cat}</div>
-        <button class="budget-del" onclick="delBudget('${b.cat}')" title="Remove">🗑</button>
-      </div>
-      <div class="budget-amounts" style="margin-bottom:7px;">
-        <span class="spent ${cls}">€${spent.toFixed(0)}</span> / €${b.limit.toFixed(0)} ${pct>=100?'🔴 OVER BUDGET':pct>=75?'⚠️ Almost full':''}
-      </div>
+      <div class="budget-item-top"><div class="budget-cat">${b.cat}</div><button class="budget-del" onclick="delBudget('${b.cat}')">🗑</button></div>
+      <div class="budget-amounts" style="margin-bottom:7px;"><span class="spent ${cls}">€${spent.toFixed(0)}</span> / €${b.limit.toFixed(0)} ${pct>=100?'🔴 OVER':pct>=75?'⚠️':''}</div>
       <div class="budget-bar-wrap"><div class="budget-bar-fill ${cls}" style="width:${pct}%"></div></div>
     </div>`;
   }).join('');
 }
 
-// ── TEMPLATE (FULLY EDITABLE - FIXED) ──
+// ── TEMPLATE CON TABELLA COMPLETAMENTE EDITABILE ──
 function addToTemplate(){
   const desc=document.getElementById('tpl_desc').value.trim();
   const amt=parseFloat(document.getElementById('tpl_amount').value);
@@ -772,45 +734,116 @@ function addToTemplate(){
   const amtEUR=parseFloat(toEUR(amt,cur).toFixed(2));
   S.fixedTemplate.push({id:Date.now(),desc,amtEUR,amtOrig:amt,cur,cat});
   document.getElementById('tpl_desc').value='';document.getElementById('tpl_amount').value='';
-  saveLS();renderTemplate();showToast(`"${desc}" added to template ✅`,'ok');
+  saveLS();renderTemplateTable();showToast(`"${desc}" added to template ✅`,'ok');
 }
 
 function delFromTemplate(id){
-  if(!confirm('Delete this item from the template? This won\'t affect already loaded entries.'))return;
+  if(!confirm('Delete this item from template?'))return;
   S.fixedTemplate=S.fixedTemplate.filter(t=>t.id!==id);
-  saveLS();renderTemplate();showToast('Template item deleted','ok');
+  if(editingTemplateId===id)editingTemplateId=null;
+  saveLS();renderTemplateTable();showToast('Template item deleted','ok');
 }
 
-function openTemplateEdit(id){
-  const t=S.fixedTemplate.find(x=>x.id===id);if(!t)return;
-  document.getElementById('tpl_edit_id').value=t.id;
-  document.getElementById('tpl_edit_desc').value=t.desc;
-  document.getElementById('tpl_edit_amount').value=t.amtOrig;
-  document.getElementById('tpl_edit_cur').value=t.cur;
-  fillSelects();
-  document.getElementById('tpl_edit_cat').value=t.cat;
-  openModal('templateEditModal');
+// Inizia la modifica inline di una riga template
+function startEditTemplate(id){
+  editingTemplateId=id;
+  renderTemplateTable();
 }
 
-function saveTemplateEdit(){
-  const id=parseInt(document.getElementById('tpl_edit_id').value);
-  const desc=document.getElementById('tpl_edit_desc').value.trim();
-  const amt=parseFloat(document.getElementById('tpl_edit_amount').value);
-  const cat=document.getElementById('tpl_edit_cat').value;
-  const cur=document.getElementById('tpl_edit_cur').value;
-  if(!desc||!amt||amt<=0){showToast('Fill all fields','err');return;}
+// Annulla la modifica inline
+function cancelEditTemplate(){
+  editingTemplateId=null;
+  renderTemplateTable();
+}
+
+// Salva la modifica inline
+function saveInlineTemplateEdit(id){
+  const descEl=document.getElementById(`tpl_edit_desc_${id}`);
+  const catEl=document.getElementById(`tpl_edit_cat_${id}`);
+  const amtEl=document.getElementById(`tpl_edit_amt_${id}`);
+  const curEl=document.getElementById(`tpl_edit_cur_${id}`);
+  
+  if(!descEl||!amtEl){return;}
+  
+  const desc=descEl.value.trim();
+  const amt=parseFloat(amtEl.value);
+  const cat=catEl?catEl.value:'Other Fixed';
+  const cur=curEl?curEl.value:'eur';
+  
+  if(!desc||!amt||amt<=0){showToast('Fill all fields correctly','err');return;}
+  
   const amtEUR=parseFloat(toEUR(amt,cur).toFixed(2));
   S.fixedTemplate=S.fixedTemplate.map(t=>t.id===id?{...t,desc,amtEUR,amtOrig:amt,cur,cat}:t);
-  saveLS();closeModal('templateEditModal');renderTemplate();
-  showToast('Template item updated ✅','ok');
+  editingTemplateId=null;
+  saveLS();renderTemplateTable();showToast('Template updated ✅','ok');
 }
 
-// FUNZIONE CORRETTA per preparare il modal di caricamento template
-function prepareTemplateLoad(){
+function renderTemplateTable(){
+  const c=document.getElementById('templateTableContainer');
+  const total=S.fixedTemplate.reduce((s,t)=>s+t.amtEUR,0);
+  
   if(!S.fixedTemplate.length){
-    showToast('📋 Template is empty! Add items first.','err');
+    c.innerHTML=`<div class="template-empty">📋 Nessuna voce nel template. Aggiungi le tue spese fisse ricorrenti qui sotto.</div>`;
     return;
   }
+  
+  const fCats=[...FIX_CATS_DEF,...S.fixCats];
+  
+  let html=`<table class="template-table">
+    <thead><tr>
+      <th>Description</th><th>Category</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Actions</th>
+    </tr></thead><tbody>`;
+  
+  S.fixedTemplate.forEach(t=>{
+    if(editingTemplateId===t.id){
+      // RIGA IN MODALITÀ EDIT
+      html+=`<tr class="editing-row">
+        <td><input type="text" class="tpl-edit-input" id="tpl_edit_desc_${t.id}" value="${t.desc.replace(/"/g,'&quot;')}"></td>
+        <td>
+          <select class="tpl-edit-select" id="tpl_edit_cat_${t.id}">
+            ${fCats.map(c=>`<option value="${c}" ${c===t.cat?'selected':''}>${c}</option>`).join('')}
+          </select>
+        </td>
+        <td style="text-align:right;">
+          <div style="display:flex;gap:6px;align-items:center;justify-content:flex-end;">
+            <input type="number" class="tpl-edit-input" id="tpl_edit_amt_${t.id}" value="${t.amtOrig}" step="0.01" min="0" style="max-width:100px;">
+            <select class="tpl-edit-select" id="tpl_edit_cur_${t.id}" style="max-width:80px;">
+              <option value="eur" ${t.cur==='eur'?'selected':''}>€ EUR</option>
+              <option value="usd" ${t.cur==='usd'?'selected':''}>$ USD</option>
+            </select>
+          </div>
+        </td>
+        <td class="td-actions">
+          <button class="tpl-save-btn" onclick="saveInlineTemplateEdit(${t.id})">💾 Save</button>
+          <button class="tpl-cancel-btn" onclick="cancelEditTemplate()">✕ Cancel</button>
+        </td>
+      </tr>`;
+    } else {
+      // RIGA NORMALE
+      const orig=t.cur==='usd'?` <span style="font-size:11px;color:var(--text3);">($${t.amtOrig.toFixed(2)})</span>`:'';
+      html+=`<tr>
+        <td><div class="td-desc">${t.desc}</div></td>
+        <td><span style="font-size:13px;color:var(--text2);">${t.cat}</span></td>
+        <td class="td-amt fixed">€${t.amtEUR.toFixed(2)}${orig}</td>
+        <td class="td-actions">
+          <button class="icon-btn edit" onclick="startEditTemplate(${t.id})" title="Modifica">✏️</button>
+          <button class="icon-btn del" onclick="delFromTemplate(${t.id})" title="Elimina">🗑</button>
+        </td>
+      </tr>`;
+    }
+  });
+  
+  html+=`</tbody></table>
+    <div style="text-align:right;font-size:14px;color:var(--text2);padding:8px 4px 0;font-weight:700;">
+      Template Total: <span style="color:var(--fixed);font-size:18px;">€${total.toFixed(2)}/month</span> • ${S.fixedTemplate.length} voci
+    </div>`;
+  
+  c.innerHTML=html;
+}
+
+// ── CARICAMENTO TEMPLATE ──
+function prepareTemplateLoad(){
+  if(!S.fixedTemplate.length){showToast('📋 Template vuoto! Aggiungi voci prima.','err');return;}
   
   const list=document.getElementById('templateCheckboxList');
   list.innerHTML=S.fixedTemplate.map((t,i)=>{
@@ -824,10 +857,8 @@ function prepareTemplateLoad(){
     </div>`;
   }).join('');
   
-  // Imposta la data di oggi
-  const today=new Date().toISOString().split('T')[0];
-  document.getElementById('tpl_load_date').value=today;
-  
+  document.getElementById('tpl_load_date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('tplLoadMonth').textContent=`${MONTHS[S.month]} ${S.year}`;
   updateTemplateTotal();
   openModal('templateLoadModal');
 }
@@ -856,49 +887,15 @@ function loadSelectedFromTemplate(){
   S.fixedTemplate.forEach((t,i)=>{
     const cb=document.getElementById(`tpl_check_${i}`);
     if(cb&&cb.checked){
-      arr.push({
-        id:Date.now()+Math.random(),
-        type:'fixed',
-        desc:t.desc,
-        amtEUR:t.amtEUR,
-        amtOrig:t.amtOrig,
-        cur:t.cur,
-        cat:t.cat,
-        date:date,
-        fromTemplate:true
-      });
+      arr.push({id:Date.now()+Math.random(),type:'fixed',desc:t.desc,amtEUR:t.amtEUR,amtOrig:t.amtOrig,cur:t.cur,cat:t.cat,date,fromTemplate:true});
       loaded++;
     }
   });
   
-  if(loaded===0){showToast('Select at least one item to load','err');return;}
+  if(loaded===0){showToast('Select at least one item','err');return;}
   
   setD(arr);saveLS();closeModal('templateLoadModal');renderAll();
-  showToast(`✅ ${loaded} fixed expenses loaded for ${MONTHS[S.month]}!`,'ok');
-}
-
-function renderTemplate(){
-  const c=document.getElementById('templateList');
-  const total=S.fixedTemplate.reduce((s,t)=>s+t.amtEUR,0);
-  if(!S.fixedTemplate.length){
-    c.innerHTML=`<div class="template-empty">📋 No template items yet — add your recurring fixed expenses below.</div>`;
-    return;
-  }
-  c.innerHTML=S.fixedTemplate.map(t=>{
-    const orig=t.cur==='usd'?` <span style="font-size:11px;color:var(--text3);">($${t.amtOrig.toFixed(2)})</span>`:'';
-    return `<div class="template-item">
-      <div class="tpl-dot"></div>
-      <div class="tpl-info">
-        <div class="tpl-desc">${t.desc}</div>
-        <div class="tpl-meta">${t.cat}</div>
-      </div>
-      <div class="tpl-amt">€${t.amtEUR.toFixed(2)}${orig}</div>
-      <div class="tpl-actions">
-        <button class="tpl-btn edit" onclick="openTemplateEdit(${t.id})" title="Edit template item">✏️</button>
-        <button class="tpl-btn del" onclick="delFromTemplate(${t.id})" title="Delete from template">🗑</button>
-      </div>
-    </div>`;
-  }).join('')+`<div style="text-align:right;font-size:13px;color:var(--text2);padding:8px 4px 0;">Template total: <b style="color:var(--fixed);">€${total.toFixed(2)}/month</b> • ${S.fixedTemplate.length} items</div>`;
+  showToast(`✅ ${loaded} spese fisse caricate per ${MONTHS[S.month]}!`,'ok');
 }
 
 // ── SUMMARY ──
@@ -912,7 +909,7 @@ function renderSummary(){
   const expPct=inc>0?Math.round((exp/inc)*100):0;
   const savePct=inc>0?Math.round((bal/inc)*100):0;
   document.getElementById('sumIncome').textContent=`€${inc.toFixed(2)}`;
-  document.getElementById('sumIncomeSub').textContent=`${n} entr${n===1?'y':'ies'}`;
+  document.getElementById('sumIncomeSub').textContent=`${n} entries`;
   document.getElementById('sumExpense').textContent=`€${exp.toFixed(2)}`;
   document.getElementById('sumExpSub').textContent=`Fixed €${fix.toFixed(2)} + Variable €${vari.toFixed(2)}`;
   document.getElementById('sumExpPct').innerHTML=inc>0?`<span style="color:${expPct>80?'var(--danger)':expPct>60?'var(--warning)':'var(--text2)'};">${expPct}% of income</span>`:'';
@@ -923,13 +920,12 @@ function renderSummary(){
   document.getElementById('sumSavingsPct').innerHTML=inc>0?`<span style="color:${savePct<0?'var(--danger)':savePct<20?'var(--warning)':'var(--success)'};">${savePct>0?'+':''}${savePct}% savings rate</span>`:'';
   let st='';
   if(inc===0&&exp===0)st='<span style="color:var(--text3)">➕ Add entries to see your monthly status</span>';
-  else if(bal>0)st=`<span style="color:var(--success)">✅ You are building — saving €${bal.toFixed(2)} this month (${savePct}% savings rate) 🚀</span>`;
-  else if(bal===0)st=`<span style="color:var(--warning)">⚠️ Break even — income equals expenses exactly</span>`;
-  else st=`<span style="color:var(--danger)">🔴 You are burning — spending €${Math.abs(bal).toFixed(2)} more than you earn</span>`;
+  else if(bal>0)st=`<span style="color:var(--success)">✅ Saving €${bal.toFixed(2)} (${savePct}% rate) 🚀</span>`;
+  else if(bal===0)st=`<span style="color:var(--warning)">⚠️ Break even</span>`;
+  else st=`<span style="color:var(--danger)">🔴 Burning €${Math.abs(bal).toFixed(2)} more than income</span>`;
   document.getElementById('sumStatus').innerHTML=st;
 }
 
-// ── GOAL ──
 function renderGoal(){
   const inc=getD().filter(e=>e.type==='income').reduce((s,e)=>s+e.amtEUR,0);
   const pct=Math.min(100,(inc/S.goal)*100);
@@ -937,14 +933,9 @@ function renderGoal(){
   document.getElementById('goalNums').textContent=`€${inc.toFixed(0)} / €${S.goal.toLocaleString()}`;
   document.getElementById('goalFill').style.width=`${pct}%`;
   const rem=S.goal-inc;
-  let st='';
-  if(inc===0)st=`<span style="color:var(--text3)">Start adding income to track your progress</span>`;
-  else if(rem>0)st=`<span style="color:var(--warning)">€${rem.toFixed(0)} still needed this month</span>`;
-  else st=`<span style="color:var(--gold)">🏆 Goal reached! You exceeded by €${Math.abs(rem).toFixed(0)}</span>`;
-  document.getElementById('goalStatus').innerHTML=st;
+  document.getElementById('goalStatus').innerHTML=inc===0?`<span style="color:var(--text3)">Start adding income</span>`:rem>0?`<span style="color:var(--warning)">€${rem.toFixed(0)} needed</span>`:`<span style="color:var(--gold)">🏆 Goal reached! +€${Math.abs(rem).toFixed(0)}</span>`;
 }
 
-// ── BEST/WORST ──
 function renderBestWorst(){
   let bestM=-1,bestV=0,worstM=-1,worstV=0;
   for(let m=0;m<12;m++){
@@ -954,13 +945,12 @@ function renderBestWorst(){
     if(inc>bestV){bestV=inc;bestM=m;}
     if(exp>worstV){worstV=exp;worstM=m;}
   }
-  document.getElementById('bestMonth').textContent=bestM>=0?MONTHS[bestM]:'No data yet';
+  document.getElementById('bestMonth').textContent=bestM>=0?MONTHS[bestM]:'No data';
   document.getElementById('bestVal').textContent=bestM>=0?`€${bestV.toFixed(2)}`:'';
-  document.getElementById('worstMonth').textContent=worstM>=0?MONTHS[worstM]:'No data yet';
+  document.getElementById('worstMonth').textContent=worstM>=0?MONTHS[worstM]:'No data';
   document.getElementById('worstVal').textContent=worstM>=0?`€${worstV.toFixed(2)}`:'';
 }
 
-// ── CUSTOM CATS ──
 function addCat(type){
   const id=type==='fixed'?'fixedCatInp':'varCatInp';
   const val=document.getElementById(id).value.trim();
@@ -969,14 +959,12 @@ function addCat(type){
   const def=type==='fixed'?FIX_CATS_DEF:VAR_CATS_DEF;
   if(arr.includes(val)||def.includes(val)){showToast('Already exists','err');return;}
   arr.push(val);document.getElementById(id).value='';
-  saveLS();fillSelects();renderCustomTags();showToast('Category added ✅','ok');
+  saveLS();fillSelects();renderCustomTags();renderTemplateTable();showToast('Category added ✅','ok');
 }
-function removeCat(type,i){(type==='fixed'?S.fixCats:S.varCats).splice(i,1);saveLS();fillSelects();renderCustomTags();}
+function removeCat(type,i){(type==='fixed'?S.fixCats:S.varCats).splice(i,1);saveLS();fillSelects();renderCustomTags();renderTemplateTable();}
 function renderCustomTags(){
-  const ft=document.getElementById('fixedCatTags');
-  ft.innerHTML=S.fixCats.length?S.fixCats.map((c,i)=>`<div class="tag">${c}<span class="tx" onclick="removeCat('fixed',${i})">×</span></div>`).join(''):'<span style="font-size:12px;color:var(--text3)">No custom categories</span>';
-  const vt=document.getElementById('varCatTags');
-  vt.innerHTML=S.varCats.length?S.varCats.map((c,i)=>`<div class="tag">${c}<span class="tx" onclick="removeCat('variable',${i})">×</span></div>`).join(''):'<span style="font-size:12px;color:var(--text3)">No custom categories</span>';
+  document.getElementById('fixedCatTags').innerHTML=S.fixCats.length?S.fixCats.map((c,i)=>`<div class="tag">${c}<span class="tx" onclick="removeCat('fixed',${i})">×</span></div>`).join(''):'<span style="font-size:12px;color:var(--text3)">No custom categories</span>';
+  document.getElementById('varCatTags').innerHTML=S.varCats.length?S.varCats.map((c,i)=>`<div class="tag">${c}<span class="tx" onclick="removeCat('variable',${i})">×</span></div>`).join(''):'<span style="font-size:12px;color:var(--text3)">No custom categories</span>';
 }
 
 // ── CHARTS ──
@@ -987,23 +975,19 @@ function renderCharts(){
   const inc=arr.filter(e=>e.type==='income').reduce((s,e)=>s+e.amtEUR,0);
   const fix=arr.filter(e=>e.type==='fixed').reduce((s,e)=>s+e.amtEUR,0);
   const vari=arr.filter(e=>e.type==='variable').reduce((s,e)=>s+e.amtEUR,0);
-
   destroyChart('bar');
-  charts.bar=new Chart(document.getElementById('chartBar'),{type:'bar',data:{labels:['Income','Fixed','Variable','Net Balance'],datasets:[{data:[inc,fix,vari,inc-fix-vari],backgroundColor:['rgba(61,214,140,.75)','rgba(124,110,255,.75)','rgba(255,140,87,.75)','rgba(61,214,140,.5)'],borderColor:['#3DD68C','#7C6EFF','#FF8C57','#3DD68C'],borderWidth:2,borderRadius:10}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`€${c.raw.toFixed(2)}`}}},scales:{x:{ticks:{color:TC,font:CF},grid:{color:GC}},y:{ticks:{color:TC,font:CF,callback:v=>`€${v}`},grid:{color:GC}}}}});
-
+  charts.bar=new Chart(document.getElementById('chartBar'),{type:'bar',data:{labels:['Income','Fixed','Variable','Net'],datasets:[{data:[inc,fix,vari,inc-fix-vari],backgroundColor:['rgba(61,214,140,.75)','rgba(124,110,255,.75)','rgba(255,140,87,.75)','rgba(61,214,140,.5)'],borderColor:['#3DD68C','#7C6EFF','#FF8C57','#3DD68C'],borderWidth:2,borderRadius:10}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:TC,font:CF},grid:{color:GC}},y:{ticks:{color:TC,font:CF,callback:v=>`€${v}`},grid:{color:GC}}}}});
   destroyChart('line');
   const iByM=MONTHS.map((_,m)=>getMonthD(S.year,m).filter(e=>e.type==='income').reduce((s,e)=>s+e.amtEUR,0));
   const eByM=MONTHS.map((_,m)=>getMonthD(S.year,m).filter(e=>e.type!=='income').reduce((s,e)=>s+e.amtEUR,0));
-  charts.line=new Chart(document.getElementById('chartLine'),{type:'line',data:{labels:MONTHS.map(m=>m.substring(0,3)),datasets:[{label:'Income',data:iByM,borderColor:'#3DD68C',backgroundColor:'rgba(61,214,140,.1)',tension:.4,fill:true,pointRadius:5,pointBackgroundColor:'#3DD68C'},{label:'Expenses',data:eByM,borderColor:'#FF5757',backgroundColor:'rgba(255,87,87,.1)',tension:.4,fill:true,pointRadius:5,pointBackgroundColor:'#FF5757'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9898C0',font:CF,boxWidth:12,padding:14}}},scales:{x:{ticks:{color:TC,font:CF},grid:{color:GC}},y:{ticks:{color:TC,font:CF,callback:v=>`€${v}`},grid:{color:GC}}}}});
-
+  charts.line=new Chart(document.getElementById('chartLine'),{type:'line',data:{labels:MONTHS.map(m=>m.substring(0,3)),datasets:[{label:'Income',data:iByM,borderColor:'#3DD68C',backgroundColor:'rgba(61,214,140,.1)',tension:.4,fill:true,pointRadius:5},{label:'Expenses',data:eByM,borderColor:'#FF5757',backgroundColor:'rgba(255,87,87,.1)',tension:.4,fill:true,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9898C0',font:CF}}},scales:{x:{ticks:{color:TC,font:CF},grid:{color:GC}},y:{ticks:{color:TC,font:CF,callback:v=>`€${v}`},grid:{color:GC}}}}});
   destroyChart('compare');
-  charts.compare=new Chart(document.getElementById('chartCompare'),{type:'bar',data:{labels:MONTHS.map(m=>m.substring(0,3)),datasets:[{label:'Income',data:iByM,backgroundColor:'rgba(61,214,140,.7)',borderColor:'#3DD68C',borderWidth:2,borderRadius:6},{label:'Expenses',data:eByM,backgroundColor:'rgba(255,87,87,.7)',borderColor:'#FF5757',borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9898C0',font:CF,boxWidth:12,padding:14}}},scales:{x:{ticks:{color:TC,font:CF},grid:{color:GC}},y:{ticks:{color:TC,font:CF,callback:v=>`€${v}`},grid:{color:GC}}}}});
-
+  charts.compare=new Chart(document.getElementById('chartCompare'),{type:'bar',data:{labels:MONTHS.map(m=>m.substring(0,3)),datasets:[{label:'Income',data:iByM,backgroundColor:'rgba(61,214,140,.7)',borderColor:'#3DD68C',borderWidth:2,borderRadius:6},{label:'Expenses',data:eByM,backgroundColor:'rgba(255,87,87,.7)',borderColor:'#FF5757',borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9898C0',font:CF}}},scales:{x:{ticks:{color:TC,font:CF},grid:{color:GC}},y:{ticks:{color:TC,font:CF,callback:v=>`€${v}`},grid:{color:GC}}}}});
   function mkDonut(id,type,pal){
     destroyChart(id);
     const cats={};arr.filter(e=>e.type===type).forEach(e=>cats[e.cat]=(cats[e.cat]||0)+e.amtEUR);
     const labels=Object.keys(cats);
-    charts[id]=new Chart(document.getElementById(id),{type:'doughnut',data:{labels:labels.length?labels:['No data'],datasets:[{data:labels.length?Object.values(cats):[1],backgroundColor:labels.length?pal.slice(0,labels.length):['rgba(255,255,255,.08)'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:'#9898C0',font:{...CF,size:11},boxWidth:12,padding:8}},tooltip:{callbacks:{label:c=>`€${c.raw.toFixed(2)}`}}}}});
+    charts[id]=new Chart(document.getElementById(id),{type:'doughnut',data:{labels:labels.length?labels:['No data'],datasets:[{data:labels.length?Object.values(cats):[1],backgroundColor:labels.length?pal.slice(0,labels.length):['rgba(255,255,255,.08)'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:'#9898C0',font:{...CF,size:11}}}}}});
   }
   mkDonut('chartIncDot','income',PAL_INC);
   mkDonut('chartFixDot','fixed',PAL_FIX);
@@ -1017,11 +1001,10 @@ function openModal(id){
   document.getElementById(id).classList.add('open');
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
-function saveRate(){const v=parseFloat(document.getElementById('rateInp').value);if(!v||v<=0){showToast('Invalid','err');return;}S.rate=v;document.getElementById('rateDisp').textContent=v.toFixed(4);saveLS();closeModal('rateModal');renderAll();showToast(`1 USD = ${v.toFixed(4)} EUR ✅`,'ok');}
-function saveGoal(){const v=parseFloat(document.getElementById('goalInp').value);if(!v||v<=0){showToast('Invalid','err');return;}S.goal=v;saveLS();closeModal('goalModal');renderAll();showToast(`Goal: €${v.toLocaleString()}/month 🎯`,'ok');}
+function saveRate(){const v=parseFloat(document.getElementById('rateInp').value);if(!v||v<=0)return;S.rate=v;document.getElementById('rateDisp').textContent=v.toFixed(4);saveLS();closeModal('rateModal');renderAll();}
+function saveGoal(){const v=parseFloat(document.getElementById('goalInp').value);if(!v||v<=0)return;S.goal=v;saveLS();closeModal('goalModal');renderAll();}
 
-// ── SAVE/EXPORT/IMPORT ──
-function manualSave(){saveLS();exportJSON(true);showToast('💾 Saved & backup downloaded!','ok');}
+function manualSave(){saveLS();exportJSON(true);showToast('💾 Saved!','ok');}
 function exportCSV(scope){
   let entries=scope==='month'?getD():MONTHS.flatMap((_,m)=>getMonthD(S.year,m));
   entries.sort((a,b)=>new Date(a.date)-new Date(b.date));
@@ -1030,10 +1013,8 @@ function exportCSV(scope){
   const vari=entries.filter(e=>e.type==='variable').reduce((s,e)=>s+e.amtEUR,0);
   const rows=[['Date','Type','Category','Description','Amount EUR','Original','Currency']];
   entries.forEach(e=>rows.push([e.date,e.type,e.cat,`"${e.desc}"`,e.amtEUR.toFixed(2),e.amtOrig.toFixed(2),e.cur.toUpperCase()]));
-  rows.push([],[`Rate: 1 USD = ${S.rate} EUR`],[`Goal: €${S.goal}`],[],['SUMMARY','','','','EUR']);
-  rows.push(['Total Income','','','',inc.toFixed(2)],['Total Fixed','','','',fix.toFixed(2)],['Total Variable','','','',vari.toFixed(2)],['Total Expenses','',(fix+vari).toFixed(2)],['Net Balance','','','',(inc-fix-vari).toFixed(2)]);
-  const lbl=scope==='month'?`${MONTHS[S.month]}_${S.year}`:`FullYear_${S.year}`;
-  dl(`FinanceTracker_${lbl}.csv`,'text/csv',rows.map(r=>r.join(',')).join('\n'));
+  rows.push([],[`Rate: 1 USD = ${S.rate} EUR`],[],['SUMMARY','','','','EUR'],['Total Income','','','',inc.toFixed(2)],['Total Fixed','','','',fix.toFixed(2)],['Total Variable','','','',vari.toFixed(2)],['Net','','','',(inc-fix-vari).toFixed(2)]);
+  dl(`FinanceTracker_${scope==='month'?`${MONTHS[S.month]}_${S.year}`:`FullYear_${S.year}`}.csv`,'text/csv',rows.map(r=>r.join(',')).join('\n'));
   showToast('CSV exported 📊','ok');
 }
 function exportJSON(silent=false){
@@ -1049,8 +1030,7 @@ function handleImport(evt){
       const p=JSON.parse(e.target.result);
       ['rate','goal','fixCats','varCats','fixedTemplate','budgets','notes'].forEach(k=>{if(p[k]!==undefined)S[k]=p[k];});
       if(p.data){Object.keys(p.data).forEach(k=>{if(!S.data[k])S.data[k]=p.data[k];else{const ids=new Set(S.data[k].map(x=>x.id));p.data[k].forEach(x=>{if(!ids.has(x.id))S.data[k].push(x);});}});}
-      saveLS();closeModal('importModal');
-      document.getElementById('rateDisp').textContent=S.rate.toFixed(4);
+      saveLS();closeModal('importModal');document.getElementById('rateDisp').textContent=S.rate.toFixed(4);
       fillSelects();renderAll();showToast('✅ Backup imported!','ok');
     }catch(err){showToast('❌ Invalid file','err');}
   };
@@ -1058,7 +1038,6 @@ function handleImport(evt){
 }
 function dl(name,type,content){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();}
 
-// ── TOAST ──
 let tt;
 function showToast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast ${type} show`;clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),3200);}
 
