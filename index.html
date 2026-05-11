@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💰 Finance Tracker v5 - Template Editabile</title>
+<title>💰 Finance Tracker v5.1 - Template Fix</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -252,7 +252,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="topbar">
   <div>
     <div class="logo-title">💰 Finance Tracker</div>
-    <div class="logo-sub">Monthly Income & Expense Manager — v5.1 Template Editabile</div>
+    <div class="logo-sub">Monthly Income & Expense Manager — v5.1 Template Fix</div>
   </div>
   <div class="topbar-pills">
     <button class="pill rate" onclick="openModal('rateModal')">💱 1 USD = <span id="rateDisp">0.9200</span> EUR ✏️</button>
@@ -272,7 +272,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="main">
 
   <div class="save-notice">
-    💡 <span><b>Auto-save active.</b> Data saved automatically in browser. Template items are now <b>fully editable</b> — modify before loading each month!</span>
+    💡 <span><b>Auto-save active.</b> Template items are fully editable — modify before loading each month!</span>
   </div>
 
   <!-- GOAL -->
@@ -297,7 +297,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <!-- MONTHLY NOTE -->
   <div class="note-block">
     <div class="note-title">📝 Monthly Notes — <span id="noteMonthLabel" style="color:var(--primary2);"></span></div>
-    <textarea class="note-textarea" id="noteArea" placeholder="Write your monthly notes here: goals, reflections, important events, decisions..."></textarea>
+    <textarea class="note-textarea" id="noteArea" placeholder="Write your monthly notes here..."></textarea>
     <button class="note-save-btn" onclick="saveNote()">💾 Save Note</button>
   </div>
 
@@ -355,7 +355,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="template-section">
         <div class="template-header">
           <div class="template-title">📋 Fixed Expenses Template <span>— edit, delete, then load each month</span></div>
-          <button class="load-month-btn" onclick="openTemplateLoadModal()">🔄 Load This Month</button>
+          <button class="load-month-btn" onclick="prepareTemplateLoad()">🔄 Load This Month</button>
         </div>
         <div class="template-list" id="templateList"></div>
         <div class="add-tpl-form">
@@ -515,7 +515,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <div class="overlay" id="templateLoadModal">
   <div class="modal">
     <h3>🔄 Load Template for <span id="tplLoadMonth"></span></h3>
-    <p>Select which fixed expenses to load this month. You can also choose the date.</p>
+    <p>Select which fixed expenses to load this month. Choose the date for all items.</p>
     <div class="fg" style="margin-bottom:12px;"><label>Date for all loaded items</label><input type="date" id="tpl_load_date"></div>
     <div class="template-checkbox-list" id="templateCheckboxList"></div>
     <div class="template-total-preview" id="templateTotalPreview">Total: €0.00</div>
@@ -568,7 +568,7 @@ const ALL_EXP_CATS=()=>[...FIX_CATS_DEF,...VAR_CATS_DEF,...S.fixCats,...S.varCat
 const PAL_INC=['#3DD68C','#7C6EFF','#FFB84D','#FF6584','#00C9FF','#9B59B6','#2ECC71'];
 const PAL_FIX=['#7C6EFF','#9D92FF','#5A4ECC','#3D35AA','#B39DFF','#6A5EEE'];
 const PAL_VAR=['#FF8C57','#FF5757','#FFB347','#FF6584','#E74C3C','#FF4D4D','#FF7043','#FF8A65','#FFA726'];
-const LS_KEY='ft5_alldata_v51';
+const LS_KEY='ft5_alldata_v51_fix';
 
 let S={year:2026,month:new Date().getMonth(),rate:0.9200,goal:10000,
   fixCats:[],varCats:[],fixedTemplate:[],budgets:[],notes:{},data:{}};
@@ -594,14 +594,14 @@ window.onload=function(){
   const loaded=loadLS();
   document.getElementById('rateDisp').textContent=S.rate.toFixed(4);
   document.getElementById('yearSel').value=S.year;
-  setTodayDates();buildMonthTabs();fillSelects();renderAll();
+  buildMonthTabs();fillSelects();renderAll();
   if(loaded)showToast('✅ Data loaded — template items are fully editable!','ok');
-  else showToast('👋 Welcome! Template is ready for your recurring expenses','ok');
+  else showToast('👋 Welcome! Add your recurring expenses to the template','ok');
 };
 
 function setTodayDates(){
   const t=new Date().toISOString().split('T')[0];
-  ['i_date','f_date','v_date','tpl_load_date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=t;});
+  ['i_date','f_date','v_date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=t;});
 }
 function buildMonthTabs(){
   const c=document.getElementById('mTabs');c.innerHTML='';
@@ -762,7 +762,7 @@ function renderBudgets(){
   }).join('');
 }
 
-// ── TEMPLATE (FULLY EDITABLE) ──
+// ── TEMPLATE (FULLY EDITABLE - FIXED) ──
 function addToTemplate(){
   const desc=document.getElementById('tpl_desc').value.trim();
   const amt=parseFloat(document.getElementById('tpl_amount').value);
@@ -805,8 +805,13 @@ function saveTemplateEdit(){
   showToast('Template item updated ✅','ok');
 }
 
-function openTemplateLoadModal(){
-  if(!S.fixedTemplate.length){showToast('Template is empty — add items first!','err');return;}
+// FUNZIONE CORRETTA per preparare il modal di caricamento template
+function prepareTemplateLoad(){
+  if(!S.fixedTemplate.length){
+    showToast('📋 Template is empty! Add items first.','err');
+    return;
+  }
+  
   const list=document.getElementById('templateCheckboxList');
   list.innerHTML=S.fixedTemplate.map((t,i)=>{
     const orig=t.cur==='usd'?` ($${t.amtOrig.toFixed(2)})`:'';
@@ -818,7 +823,11 @@ function openTemplateLoadModal(){
       </label>
     </div>`;
   }).join('');
-  setTodayDates();
+  
+  // Imposta la data di oggi
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('tpl_load_date').value=today;
+  
   updateTemplateTotal();
   openModal('templateLoadModal');
 }
@@ -831,24 +840,39 @@ function updateTemplateTotal(){
   });
   document.getElementById('templateTotalPreview').textContent=`Total to load: €${total.toFixed(2)}`;
   const btn=document.getElementById('btnLoadSelected');
-  btn.textContent=total>0?`📥 Load Selected (€${total.toFixed(2)})`:'📥 Load Selected';
-  btn.disabled=total===0;
-  btn.style.opacity=total===0?'0.5':'1';
+  if(btn){
+    btn.textContent=total>0?`📥 Load Selected (€${total.toFixed(2)})`:'📥 Load Selected';
+    btn.style.opacity=total===0?'0.5':'1';
+    btn.disabled=total===0;
+  }
 }
 
 function loadSelectedFromTemplate(){
   const date=document.getElementById('tpl_load_date').value;
   if(!date){showToast('Select a date','err');return;}
+  
   const arr=getD();
   let loaded=0;
   S.fixedTemplate.forEach((t,i)=>{
     const cb=document.getElementById(`tpl_check_${i}`);
     if(cb&&cb.checked){
-      arr.push({id:Date.now()+Math.random(),type:'fixed',desc:t.desc,amtEUR:t.amtEUR,amtOrig:t.amtOrig,cur:t.cur,cat:t.cat,date,fromTemplate:true});
+      arr.push({
+        id:Date.now()+Math.random(),
+        type:'fixed',
+        desc:t.desc,
+        amtEUR:t.amtEUR,
+        amtOrig:t.amtOrig,
+        cur:t.cur,
+        cat:t.cat,
+        date:date,
+        fromTemplate:true
+      });
       loaded++;
     }
   });
+  
   if(loaded===0){showToast('Select at least one item to load','err');return;}
+  
   setD(arr);saveLS();closeModal('templateLoadModal');renderAll();
   showToast(`✅ ${loaded} fixed expenses loaded for ${MONTHS[S.month]}!`,'ok');
 }
@@ -857,7 +881,7 @@ function renderTemplate(){
   const c=document.getElementById('templateList');
   const total=S.fixedTemplate.reduce((s,t)=>s+t.amtEUR,0);
   if(!S.fixedTemplate.length){
-    c.innerHTML=`<div class="template-empty">📋 No template items yet — add your recurring fixed expenses below. They'll be saved permanently and editable each month.</div>`;
+    c.innerHTML=`<div class="template-empty">📋 No template items yet — add your recurring fixed expenses below.</div>`;
     return;
   }
   c.innerHTML=S.fixedTemplate.map(t=>{
@@ -990,7 +1014,6 @@ function renderCharts(){
 function openModal(id){
   if(id==='rateModal')document.getElementById('rateInp').value=S.rate;
   if(id==='goalModal')document.getElementById('goalInp').value=S.goal;
-  if(id==='templateLoadModal')openTemplateLoadModal();
   document.getElementById(id).classList.add('open');
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
