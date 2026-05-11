@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💰 Finance Tracker v5</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -137,8 +138,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .template-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
 .template-title{font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;color:var(--primary2);}
 .template-title span{font-size:12px;color:var(--text3);font-weight:500;}
+.template-header-buttons{display:flex;gap:8px;flex-wrap:wrap;}
 .load-month-btn{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;padding:11px 20px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;transition:all .2s;}
 .load-month-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,110,255,.4);}
+.save-from-month-btn{background:linear-gradient(135deg,var(--warning),#FFA500);color:#fff;border:none;padding:11px 20px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;transition:all .2s;}
+.save-from-month-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,184,77,.4);}
 
 .template-table{width:100%;border-collapse:collapse;margin-bottom:16px;}
 .template-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);padding:0 14px 12px;text-align:left;border-bottom:1px solid var(--border);}
@@ -146,13 +150,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .template-table td{padding:12px 14px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
 .template-table tr:last-child td{border-bottom:none;}
 .template-table tr:hover td{background:rgba(255,255,255,.02);}
-.template-empty{text-align:center;padding:18px;color:var(--text3);font-size:13px;background:var(--bg3);border:1px dashed var(--border);border-radius:12px;}
+.template-empty{text-align:center;padding:24px;color:var(--text3);font-size:13px;background:var(--bg3);border:1px dashed var(--border);border-radius:12px;}
 .tpl-edit-input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;width:100%;transition:border-color .2s;}
 .tpl-edit-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px rgba(124,110,255,.1);}
 .tpl-edit-select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;}
 .editing-row{background:rgba(124,110,255,.08)!important;}
 
-.add-tpl-form{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:16px;}
+.add-tpl-form{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:16px;margin-top:16px;}
 .add-tpl-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;}
 .btn-add-tpl{padding:10px 18px;border-radius:10px;border:none;font-size:13px;font-weight:700;background:var(--primary);color:#fff;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;align-self:flex-end;transition:all .2s;}
 .btn-add-tpl:hover{opacity:.85;}
@@ -353,7 +357,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="template-section">
         <div class="template-header">
           <div class="template-title">📋 Fixed Expenses Template <span>— recurring monthly expenses</span></div>
-          <button class="load-month-btn" onclick="prepareTemplateLoad()">🔄 Load This Month</button>
+          <div class="template-header-buttons">
+            <button class="save-from-month-btn" onclick="saveCurrentMonthToTemplate()" title="Save all fixed expenses from this month as individual template items">💾 Save Current Month as Template</button>
+            <button class="load-month-btn" onclick="prepareTemplateLoad()">🔄 Load This Month</button>
+          </div>
         </div>
         <div id="templateTableContainer"></div>
         <div class="add-tpl-form">
@@ -755,6 +762,30 @@ function addToTemplate(){
   saveLS();renderTemplateTable();showToast(`"${desc}" added to template ✅`,'ok');
 }
 
+// NUOVA FUNZIONE: Salva le spese fisse del mese corrente come voci separate nel template
+function saveCurrentMonthToTemplate(){
+  const currentFixed=getD().filter(e=>e.type==='fixed');
+  if(!currentFixed.length){
+    showToast('No fixed expenses in this month to save!','err');
+    return;
+  }
+  
+  if(!confirm(`Save all ${currentFixed.length} fixed expenses from ${MONTHS[S.month]} as individual template items?\n\nThis will REPLACE the current template.`))return;
+  
+  // Sostituisci il template con le voci del mese corrente
+  S.fixedTemplate=currentFixed.map(e=>({
+    id:Date.now()+Math.random(),
+    desc:e.desc,
+    amtEUR:e.amtEUR,
+    amtOrig:e.amtOrig||e.amtEUR,
+    cur:e.cur||'eur',
+    cat:e.cat
+  }));
+  
+  saveLS();renderTemplateTable();
+  showToast(`💾 Template updated with ${S.fixedTemplate.length} items from ${MONTHS[S.month]}!`,'ok');
+}
+
 function delFromTemplate(id){
   if(!confirm('Delete this item from the template?'))return;
   S.fixedTemplate=S.fixedTemplate.filter(t=>t.id!==id);
@@ -790,7 +821,7 @@ function renderTemplateTable(){
   const fCats=[...FIX_CATS_DEF,...S.fixCats];
   
   if(!S.fixedTemplate.length){
-    c.innerHTML=`<div class="template-empty">📋 No template items yet — add your recurring fixed expenses below</div>`;
+    c.innerHTML=`<div class="template-empty">📋 No template items yet — add items below or click <b>"Save Current Month as Template"</b> to save this month's fixed expenses</div>`;
     return;
   }
   
